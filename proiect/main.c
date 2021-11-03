@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "entities.h"
 #define SUCCESS 0
 #define FAIL -1
@@ -11,7 +12,8 @@ int main(int argc, char **argv) {
         return FAIL;
     }
     FILE *image_file = fopen(argv[0], "r");
-    int rc = read_raster_image(image_file, pixels);
+    pixel_t **pixels = (pixel_t **) calloc(1,sizeof(pixel_t *));
+    int rc = read_raster_image(image_file, pixels[0]);
     if (rc == FAIL) {
         perror("error reading image_file");
         return FAIL;
