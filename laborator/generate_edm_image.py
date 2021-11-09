@@ -1,4 +1,4 @@
-import bioformats
+import bioformats as bf
 import javabridge
 import numpy as np
 import tifffile as tiff
@@ -21,12 +21,16 @@ DATASETS = [str(DATASET_DIR + os.sep + file) for file in os.listdir(DATASET_DIR)
 
 print (JARS)
 print (DATASETS)
-print (bioformats.__version__)
+print (bf.__version__)
 
 def myfunction():
     print (myfunction)
 
 javabridge.start_vm(class_path=str(JARS))
+print (bf.__name__)
+imagereader = bf.get_image_reader(None, path=DATASETS[0])
+metadata = javabridge.JWrapper(imagereader,imagereader.getMetadataStore())
+print(metadata.getChannelCount(0))
 javabridge.kill_vm()
 
 ###
