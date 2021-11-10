@@ -14,6 +14,9 @@ install ant
 ```
 pip install tifffile 
 ```
+```
+pip install zarr
+```
 **required version** 2021.11.2
 **tested on little endian platforms**
 **python3.7 versions are deprecated**
