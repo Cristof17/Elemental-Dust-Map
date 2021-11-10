@@ -35,31 +35,46 @@ javabridge.start_vm(class_path=str(JARS))
 #print(metadata.getChannelCount(0))
 tiffFile = tiff.TiffFile(DATASETS[0])
 pages = tiffFile.pages
-image = pages[0]
+image = pages[0] #numpy array
 image_size = image.shape
-image_data_type = image.dtype
-image_metadata = image.tags
+image_index = image.index #int or tuple of int index of the page in file
+image_data_type = image.dtype #numpy.dtype or NONE
+image_shape = image.shape #tuple of int , dimensions in IFD
+image_axes = image.axes #string 'S' sample, 'X' width, 'Y' length, 'Z' depth
+image_metadata = image.tags #TiffTags multidict in IFD
+image_colorMap = image.colormap #numpy.ndarray color lookup table
+image_shape = image.shaped #tuple of int 0 : separate samplesperpixel or 1 
+                           #             1 : imagedepth Z or 1
+                           #             2 : imagelength Y
+                           #             3 : imagewidth X
+                           #             4 : contig samplesperpixel or 1
 image_width = image_metadata['ImageWidth']
 image_height = image_metadata['ImageLength']
 image_bits_per_sample = image_metadata['BitsPerSample']
 image_compression = image_metadata['Compression']
 image_color_space = image_metadata['PhotometricInterpretation']
 image_fill_order = image_metadata['FillOrder'] #MSB2LSB
-image_resolution = image_metadata['XResolution']
+image_X_resolution = image_metadata['XResolution'] # python tuple
+image_Y_resolution = image_metadata['YResolution'] # python tuple
 image_samples_per_pixel = image_metadata['SamplesPerPixel']
 image_source_and_version= image_metadata['Software']
 image_timestamp = image_metadata['DateTime']
 image_artist = image_metadata['Artist']
 image_sample_format = image_metadata['SampleFormat']
 
+
 for tag in image.tags:
     tag_name, tag_value = tag.name, tag.value
     print (tag_name)
     print (tag_value)
 print (image_data_type)
-
+print (tiffFile.filename)
+print(image.size)
+print (image.dtype);
+print (type(image_X_resolution))
+print (tiffFile.filename + " resolution is ")
+print (image_shape)
 javabridge.kill_vm()
-
 ###
 ###for file in files:
     ###print ("file = " + file)
