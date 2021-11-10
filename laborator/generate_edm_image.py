@@ -34,7 +34,17 @@ javabridge.start_vm(class_path=str(JARS))
 #metadata = javabridge.JWrapper(imagereader,imagereader.getMetadataStore())
 #print(metadata.getChannelCount(0))
 tiffFile = tiff.TiffFile(DATASETS[0])
-print (tiffFile.pages)
+pages = tiffFile.pages
+image = pages[0]
+image_size = image.shape
+image_data_type = image.dtype
+image_resolution = image.tags['XResolution']
+for tag in image.tags:
+    tag_name, tag_value = tag.name, tag.value
+    print (tag_name)
+    print (tag_value)
+print (image_data_type)
+
 javabridge.kill_vm()
 
 ###

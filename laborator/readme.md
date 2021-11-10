@@ -14,6 +14,7 @@ install ant
 ```
 pip install tifffile 
 ```
+###alternatively use imread
 ```
 pip install zarr
 ```
