@@ -38,7 +38,20 @@ pages = tiffFile.pages
 image = pages[0]
 image_size = image.shape
 image_data_type = image.dtype
-image_resolution = image.tags['XResolution']
+image_metadata = image.tags
+image_width = image_metadata['ImageWidth']
+image_height = image_metadata['ImageLength']
+image_bits_per_sample = image_metadata['BitsPerSample']
+image_compression = image_metadata['Compression']
+image_color_space = image_metadata['PhotometricInterpretation']
+image_fill_order = image_metadata['FillOrder'] #MSB2LSB
+image_resolution = image_metadata['XResolution']
+image_samples_per_pixel = image_metadata['SamplesPerPixel']
+image_source_and_version= image_metadata['Software']
+image_timestamp = image_metadata['DateTime']
+image_artist = image_metadata['Artist']
+image_sample_format = image_metadata['SampleFormat']
+
 for tag in image.tags:
     tag_name, tag_value = tag.name, tag.value
     print (tag_name)
