@@ -11,10 +11,28 @@ import os
 
 ###image = np.empty(size, np.uint8)
 
-def process_image_strips(imageBytes: np.ndarray, stripOffsets: np.ndarray, stripCounts: np.ndarray):
-    print (imageBytes)
-    print (stripOffsets)
-    print (stripCounts)
+def process_image_strips(
+    imagePixels: np.ndarray, 
+    stripOffsets: tiff.TiffTag, 
+    stripCounts: tiff.TiffTag):
+    #print (imageBytes)
+    #print (stripOffsets)
+    #print (stripCounts)
+    image_shape = image_pixels.shape
+    offsetsArray = stripOffsets.value
+    countsArray = stripCounts.value
+    offsetStripPairs = zip(stripOffsets.value,stripCounts.value)
+    for pair in offsetStripPairs:
+        if pair[0] + pair[1] > imageBytes.size:
+            break
+        #print(pair)
+        strip = imageBytes[pair[0],pair[1]]
+        #print(strip)
+    #for offset in stripOffsets.value:
+        #@print (offset)
+    #for count in stripCounts.value:
+        #print (count)
+        
 
 #JARS_DIR_JAR = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "jar"
 #JARS_DIR_ARTIFACTS = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "artifacts"
@@ -25,6 +43,8 @@ def process_image_strips(imageBytes: np.ndarray, stripOffsets: np.ndarray, strip
 
 DATASET_DIR = os.getcwd() + os.sep + "laborator" + os.sep + "Data" + os.sep + "CCS" + os.sep + "Detectie_Regiuni_Poligonale"
 DATASETS = [str(DATASET_DIR + os.sep + file) for file in os.listdir(DATASET_DIR)]
+
+OUTPUTS = [datasetFile + "_output" for datasetFile in DATASETS]
 
 #print (JARS)
 print (DATASETS)
@@ -75,13 +95,22 @@ for tag in image.tags:
     tag_name, tag_value = tag.name, tag.value
     print (tag_name)
     print (tag_value)
-print (image_data_type)
-print (tiffFile.filename)
-print(image.size)
-print (image.dtype);
-print (type(image_X_resolution))
-print (tiffFile.filename + " resolution is ")
-print (image_shape)
+
+#print (image_data_type)
+#print (tiffFile.filename)
+#print(image.size)
+#print (image.dtype);
+#print (type(image_X_resolution))
+#print (tiffFile.filename + " resolution is ")
+#print (image_shape)
+#print (image_strip_offsets.name)
+#print (image_strip_offsets.code)
+#print (image_strip_offsets.dtype)
+#print (image_strip_offsets.count)
+#print (image_strip_offsets.value)
+#print (image_strip_offsets.valueoffset)
+#print (image_strip_offsets.offset)
+#print (image_strip_offsets.parent)
 process_image_strips(image_data, image_strip_offsets, image_strip_counts)
 #javabridge.kill_vm()
 ###
