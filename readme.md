@@ -7,6 +7,7 @@ apt-get install cmake
 ```
 - install **tifffile** python library for tifffile parsing
 	- _documentation_ for TIFF in **documentation** folder 
+	- ***alternatively*** use imread
 ```
 pip install tifffile 
 ```
@@ -15,7 +16,6 @@ pip install tifffile
 ```
 pip install numpy
 ```
-###alternatively use imread
 - install zarr for compression formats
 	- **required version** 2021.11.2
 	- **tested on little endian platforms**
