@@ -13,7 +13,7 @@ apt-get install cmake
 ```
 pip install tifffile 
 ```
-- install numpy for image data
+- install **numpy** for image data
 	- _documentation_ for numpy in **documentation** folder 
 ```
 pip install numpy
