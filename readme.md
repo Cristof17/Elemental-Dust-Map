@@ -6,7 +6,6 @@
 ```
 apt-get install cmake
 ```
-
 #### Python
 - install **tifffile** python library for tifffile parsing
 	- _documentation_ for TIFF in **documentation** folder 
@@ -18,6 +17,10 @@ pip install tifffile
 	- _documentation_ for numpy in **documentation** folder 
 ```
 pip install numpy
+```
+- install **ctypes** for calling C functions from Python
+```
+pip install ctypes
 ```
 - install **zarr** for compression formats
 	- **required version** 2021.11.2

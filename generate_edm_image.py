@@ -18,15 +18,16 @@ def process_image_strips(
     #print (imageBytes)
     #print (stripOffsets)
     #print (stripCounts)
-    image_shape = image_pixels.shape
-    offsetsArray = stripOffsets.value
-    countsArray = stripCounts.value
+    imageShape = imagePixels.shape
+    print (imageShape) #(xResolution,Yresolution.channelComponents) format
+    offsetsArray = stripOffsets.value #start of strip (byte position in file)
+    countsArray = stripCounts.value #end of strip (byte position in file)
     offsetStripPairs = zip(stripOffsets.value,stripCounts.value)
     for pair in offsetStripPairs:
-        if pair[0] + pair[1] > imageBytes.size:
+        if pair[0] + pair[1] > imagePixels.size:
             break
         #print(pair)
-        strip = imageBytes[pair[0],pair[1]]
+        strip = imagePixels[pair[0],pair[1]]
         #print(strip)
     #for offset in stripOffsets.value:
         #@print (offset)
@@ -41,7 +42,7 @@ def process_image_strips(
 #JARS.append([str(JARS_DIR_ARTIFACTS + os.sep + file) for file in os.listdir(JARS_DIR_ARTIFACTS)])
 #print (JARS)
 
-DATASET_DIR = os.getcwd() + os.sep + "laborator" + os.sep + "Data" + os.sep + "CCS" + os.sep + "Detectie_Regiuni_Poligonale"
+DATASET_DIR = os.getcwd() + os.sep + "../" + os.sep + "laborator" + os.sep + "Data" + os.sep + "CCS" + os.sep + "Detectie_Regiuni_Poligonale"
 DATASETS = [str(DATASET_DIR + os.sep + file) for file in os.listdir(DATASET_DIR)]
 
 OUTPUTS = [datasetFile + "_output" for datasetFile in DATASETS]
