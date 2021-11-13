@@ -5,9 +5,6 @@
 ```
 apt-get install cmake
 ```
-```
-**this is for C**
-```
 - install **tifffile** python library for tifffile parsing
 	- _documentation_ for TIFF in **documentation** folder 
 ```
@@ -27,6 +24,7 @@ pip install zarr
 ```
 - install CPython for zarr **maybe it is necessary; didn't use zarr so far**
 	- Cpython 3.10.0, 64bit
+**this is for C**
 ```
 pip install cpython
 ```
