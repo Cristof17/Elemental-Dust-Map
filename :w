@@ -21,21 +21,16 @@ def process_image_strips(
     imageShape = imagePixels.shape
     imageResolutionWidth = imageShape[0]
     imageResoulutionHeight = imageShape[1]
-    imageChannelCount = imageShape[2]
+    imageChannel = imageShape[2]
     print (imageShape) #(xResolution,Yresolution.channelComponents) format
     offsetsArray = stripOffsets.value #start of strip (byte position in file)
     countsArray = stripCounts.value #end of strip (byte position in file)
-    offsetCountPairs = zip(stripOffsets.value,stripCounts.value)
-    for offsetCount in offsetCountPairs:
-        if offsetCount[0] + offsetCount[1] > imagePixels.size/imageChannelCount:
+    offsetStripPairs = zip(stripOffsets.value,stripCounts.value)
+    for pair in offsetStripPairs:
+        if pair[0] + pair[1] > imagePixels.size:
             break
-        stripStart = int(offsetCount[0]/imageChannelCount)
-        stripEnd = int(stripStart + offsetCount[1]/imageChannelCount)
-        strip = imagePixels[stripStart:stripEnd]
-        print ("strip start at " + str(stripStart))
-        print (imagePixels)
-        print ("strip end at " + str(stripEnd))
         #print(pair)
+        strip = imagePixels[pair[0],pair[1]]
         #print(strip)
     #for offset in stripOffsets.value:
         #@print (offset)
