@@ -16,7 +16,7 @@ pip install tifffile
 ```
 pip install numpy
 ```
-- install zarr for compression formats
+- install **zarr** for compression formats
 	- **required version** 2021.11.2
 	- **tested on little endian platforms**
 	- **python3.7 versions are deprecated**
