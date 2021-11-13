@@ -5,7 +5,6 @@
 ```
 apt-get install cmake
 ```
-- install **ant**
 ```
 **this is for C**
 ```
@@ -34,6 +33,13 @@ pip install cpython
 
 ### this is for Java VM 
 ### TIFF File parser which uses java VM, **not working**
+- install **ant**
+```
+sudo apt-get install ant for building libraries
+```
+**use bioformats.formatreader for reading**
+***documentation at https://pythonhosted.org/python-bioformats/_modules/bioformats/formatreader.html***
+
 ```
 pip install python-bioformats
 ```
@@ -41,10 +47,6 @@ pip install python-bioformats
 ```
 pip install javabridge
 ```
-
-**use bioformats.formatreader for reading**
-*** documentation at https://pythonhosted.org/python-bioformats/_modules/bioformats/formatreader.html***
-
 **required version 1.21.3**
 
 ```
