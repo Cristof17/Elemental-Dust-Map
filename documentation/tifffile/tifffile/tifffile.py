@@ -3134,7 +3134,6 @@ class TiffFile:
         self._files = {fh.name: self}  # cache of TiffFile instances
         self._decoders = {}  # cache of TiffPage.decode functions
         self._parent = self if _parent is None else _parent  # OME master file
-
         try:
             fh.seek(0)
             header = fh.read(4)
