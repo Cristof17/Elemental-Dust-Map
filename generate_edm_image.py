@@ -14,6 +14,13 @@ import os
 
 ###image = np.empty(size, np.uint8)
 
+process_image_lib = None
+try:
+    PROCESS_IMAGE_STRIP_LIBRARY = "process_image_strip.so"
+    process_image_lib = libraryLoader.LoadLibrary(os.getcwd() + os.sep + PROCESS_IMAGE_LIBRARY)
+except Exception as e:
+    print (e)
+
 def process_image_strips(
     imagePixels: np.ndarray, 
     imagePixelsAxes: tuple,                                     # describes the image as Y height, X width, S sampleSize (3 is 3 dtypes) 
@@ -87,13 +94,18 @@ def process_image_strip(image_strip: np.ndarray, image_axes:tuple):
             for imageYCoordinate in range (0,int(strip_height-1)):
                 if (strip_height == 0):
                     break
-                top_left_corner = tuple(imageYCoordinate,imageXCoordinate)
-                top_right_corner = tuple(imageYCoordinate,imageXCoordinate+1)
-                bottom_left_corner = tuple(imageYCoordinate+1,imageXCoordinate)
-                bottom_left_corner = tuple(imageYCoordinate+1,imageXCoordinate+1)
+                top_left_corner = tuple([imageYCoordinate,imageXCoordinate])
+                top_right_corner = tuple([imageYCoordinate,imageXCoordinate+1])
+                bottom_left_corner = tuple([imageYCoordinate+1,imageXCoordinate])
+                bottom_right_corner = tuple([imageYCoordinate+1,imageXCoordinate+1])
+
+                pixel_left_top = (image_strip[top_left_corner[0]][top_left_corner[1]][channel])
+                pixel_right_top = (image_strip[top_right_corner[0]][top_right_corner[1]][channel])
+                pixel_left_bottom = (image_strip[bottom_left_corner[0]][bottom_left_corner[1]][channel])
+                pixel_right_bottom = (image_strip[bottom_right_corner[0]][bottom_right_corner[1]][channel])
                 for boxXCoordinate in range (imageXCoordinate,imageXCoordinate+1):
                     for boxYCoordinate in range (imageYCoordinate,imageYCoordinate+1):
-                        pixelValue = (image_strip[boxYCoordinate][boxXCoordinate][channel])
+                        process_image_lib.
                         #print ("stripHeight = " + str(strip_height))
                         #print ("stripWidth = " + str(strip_width))
                         #print ("boxXCoordinate = " + str(boxXCoordinate))
@@ -124,12 +136,6 @@ def myfunction():
 #metadata = javabridge.JWrapper(imagereader,imagereader.getMetadataStore())
 #print(metadata.getChannelCount(0))
 tiffFile = tiff.TiffFile(DATASETS[0])
-process_image_lib = None
-try:
-    PROCESS_IMAGE_STRIP_LIBRARY = "process_image_strip.so"
-    process_image_lib = libraryLoader.LoadLibrary(os.getcwd() + os.sep + PROCESS_IMAGE_LIBRARY)
-except Exception as e:
-    print (e)
 pages = tiffFile.pages
 print ("pages length = " + str(len(tiffFile.series)))
 print ("page shape = " + str(len(tiffFile.series[0].shape)))
