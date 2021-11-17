@@ -32,7 +32,6 @@ def process_image_strips(
     #print (stripOffsets)
     #print (stripCounts)
     imageShape = imagePixels.shape                              #shape describes the image (height,width,samples)
-                                                                #(YResolution,XResoulution,channelComponents)
     print (imagePixelsAxes)                                     
     imageWidth = imageShape[imagePixelsAxes.index('X')]         #axe which describes image height or YResolution
     imageHeight = imageShape[imagePixelsAxes.index('Y')]        #axe which describes image width  or XResolution
@@ -45,9 +44,11 @@ def process_image_strips(
     for pair in offsetCountPairs:                               #process each strip
         offset = int(pair[0] / imageChannelCount)
         count  = int(pair[1] / imageChannelCount)
-        strip  = imagePixels[offset:offset + count]
+        strip  = imagePixels[offset:(offset + count)]
         if int(offset + count) > int(imageHeight):
                 count = int(imageHeight - count);
+        if (strip.shape[imagePixelsAxes.index('Y')] == 0):
+               continue 
         print ("imageHeight = " + str(imageHeight))
         print ("offset  = " + str(offset))
         print ("count = " + str(count))
@@ -86,14 +87,17 @@ def process_image_strip(image_strip: np.ndarray, image_axes:tuple):
             for imageYCoordinate in range (0,int(strip_height-1)):
                 if (strip_height == 0):
                     break
-                for boxXCoordinate in range (imageXCoordinate-1,imageXCoordinate):
-                    for boxYCoordinate in range (imageYCoordinate-1,imageYCoordinate):
+                top_left_corner = tuple(imageYCoordinate,imageXCoordinate)
+                top_right_corner = tuple(imageYCoordinate,imageXCoordinate+1)
+                bottom_left_corner = tuple(imageYCoordinate+1,imageXCoordinate)
+                bottom_left_corner = tuple(imageYCoordinate+1,imageXCoordinate+1)
+                for boxXCoordinate in range (imageXCoordinate,imageXCoordinate+1):
+                    for boxYCoordinate in range (imageYCoordinate,imageYCoordinate+1):
                         pixelValue = (image_strip[boxYCoordinate][boxXCoordinate][channel])
                         #print ("stripHeight = " + str(strip_height))
                         #print ("stripWidth = " + str(strip_width))
                         #print ("boxXCoordinate = " + str(boxXCoordinate))
                         #print ("boxYCoordinate = " + str(boxYCoordinate))
-                        #print ("pixel at position " + str(imageXCoordinate) + ", " + str(imageYCoordinate) + " is " + str(pixelValue))
 
 #JARS_DIR_JAR = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "jar"
 #JARS_DIR_ARTIFACTS = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "artifacts"
