@@ -15,7 +15,7 @@ typedef struct boundary {
 } boundary_t;
 
 typedef struct luminosity {
-    float luminosity_t;
+    float luminosity;
 } luminosity_t;
 
 typedef struct pixel {

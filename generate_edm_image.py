@@ -5,7 +5,9 @@ import tifffile as tiff #for reading tiff files
 import lxml as xml
 import ctypes
 import math
-from ctypes import cdll as libraryLoader 
+#from ctypes import cdll as libraryLoader 
+from ctypes import *
+#import ctypes
 #import imagecodecs as codecs
 #import matplotlib as matplotlib 
 #import bioformats.formatreader as reader
@@ -16,8 +18,9 @@ import os
 
 process_image_lib = None
 try:
-    PROCESS_IMAGE_STRIP_LIBRARY = "process_image_strip.so"
-    process_image_lib = libraryLoader.LoadLibrary(os.getcwd() + os.sep + PROCESS_IMAGE_LIBRARY)
+    PROCESS_IMAGE_LIBRARY = "process_image_lib.so"
+    LIB_PATH = os.getcwd() + os.sep + PROCESS_IMAGE_LIBRARY
+    process_image_lib = ctypes.CDLL(LIB_PATH)
 except Exception as e:
     print (e)
 
@@ -105,7 +108,7 @@ def process_image_strip(image_strip: np.ndarray, image_axes:tuple):
                 pixel_right_bottom = (image_strip[bottom_right_corner[0]][bottom_right_corner[1]][channel])
                 for boxXCoordinate in range (imageXCoordinate,imageXCoordinate+1):
                     for boxYCoordinate in range (imageYCoordinate,imageYCoordinate+1):
-                        process_image_lib.
+                        #process_image_lib.callFromPython
                         #print ("stripHeight = " + str(strip_height))
                         #print ("stripWidth = " + str(strip_width))
                         #print ("boxXCoordinate = " + str(boxXCoordinate))
