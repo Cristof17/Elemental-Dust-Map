@@ -25,7 +25,7 @@ EDP_t *generate_edp_from_pixel(uint8_t raster_pixel, uint8_t raster_pixel_x, uin
 	return edp;
 }
 
-void callFromPython() {
+void emptyFunction() {
 }
 
 EDM_t *generate_edm_from_edp(EDP_t* light_sources, size_t light_sources_size) {
