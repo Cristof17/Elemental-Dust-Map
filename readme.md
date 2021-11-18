@@ -68,3 +68,17 @@ pip install imagecodecs
 ```
 **required version 2021.8.26**
 
+####Compiling
+```
+make
+```
+
+####Running
+```
+python3 generate_edm_image.py
+```
+
+#### Cleaning
+```
+make clean
+```

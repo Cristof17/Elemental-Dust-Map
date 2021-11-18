@@ -6,5 +6,5 @@ build:
 run:
 	./main
 clean:
-	rm -rf generate_edm_from_raster.o main.o main
+	rm -rf generate_edm_from_raster.o main.o main process_image_lib.so
 .PHONY: clean
