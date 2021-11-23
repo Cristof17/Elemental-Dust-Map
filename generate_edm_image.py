@@ -18,6 +18,8 @@ import os
 ###image = np.empty(size, np.uint8)
 
 process_image_lib = None
+outputDir = os.getcwd() + os.sep + "outputs" + os.sep
+stripOutputDir = outputDir + os.sep + "strips" + os.sep
 try:
     PROCESS_IMAGE_LIBRARY = "process_image_lib.so"
     LIB_PATH = os.getcwd() + os.sep + PROCESS_IMAGE_LIBRARY
@@ -126,7 +128,12 @@ def process_image_strip(image_strip: np.ndarray, image_axes:tuple):
                         #print ("stripWidth = " + str(strip_width))
                         #print ("boxXCoordinate = " + str(boxXCoordinate))
                         #print ("boxYCoordinate = " + str(boxYCoordinate))
-    write_tiff_file('tst',image_strip)                        
+    write_tiff_file(stripOutputDir + os.sep +
+    				"strip_" + 
+    				str(image_strip.shape[0]) + "_" +
+    				str(image_strip.shape[1]) + "_" +
+    				str(image_strip.shape[2]) + ".tiff",
+    				image_strip)                   
 
 #JARS_DIR_JAR = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "jar"
 #JARS_DIR_ARTIFACTS = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "artifacts"
