@@ -18,8 +18,16 @@ import os
 ###image = np.empty(size, np.uint8)
 
 process_image_lib = None
-outputDir = os.getcwd() + os.sep + "outputs" + os.sep
-stripOutputDir = outputDir + os.sep + "strips" + os.sep
+OUTPUT_DIRNAME = os.getcwd() + os.sep + "outputs" + os.sep
+OUTPUT_STRIPS_DIRNAME = OUTPUT_DIRNAME + os.sep + "strips" + os.sep
+try:
+    os.mkdir(OUTPUT_DIRNAME)
+except FileExistsError as e:
+    print(e)
+try:
+    os.mkdir(OUTPUT_STRIPS_DIRNAME)
+except FileExistsError as e:
+    print(e)
 try:
     PROCESS_IMAGE_LIBRARY = "process_image_lib.so"
     LIB_PATH = os.getcwd() + os.sep + PROCESS_IMAGE_LIBRARY
@@ -27,74 +35,86 @@ try:
 except Exception as e:
     print (e)
     
-def write_tiff_file (filename, 
-			data:np.ndarray):
-	writer = tiff.TiffWriter(filename)
-	writer.write(data)
-	writer.close()
+def write_tiff_file(dirname,
+                    filename, 
+                    data:np.ndarray):
+                    oldDir = os.getcwd()
+                    os.chdir(str(dirname))
+                    writer = tiff.TiffWriter(str(filename))
+                    writer.write(data)
+                    writer.close()
+                    os.chdir(str(oldDir))
 	
-def process_image_strips(
-    imagePixels: np.ndarray, 
-    imagePixelsAxes: tuple,                                     # describes the image as Y height, X width, S sampleSize (3 is 3 dtypes) 
-    stripOffsets: tiff.TiffTag,                                 # describes the offsets in the image data of the strip
-    stripCounts: tiff.TiffTag,                              
-    rowsPerStrip,                                               # describes the rows per strip as given from the TiffFile metadata
-    processImageStripLibrary):                                  # shared library for processing strips
-    IMAGE_BOX_SIZE_WIDTH  = 2
-    IMAGE_BOX_SIZE_HEIGHT = 2
-    #presume X resolution is fair number, it divides by 2
-    #presume Y resolution is fair number, it divides by 2
-    #process the image strips as 2x2 box which calculates
-    #the light point of the EDM by referencing the four corners
-    #of the BOX (TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT)
-    #print (imageBytes)
-    #print (stripOffsets)
-    #print (stripCounts)
-    imageShape = imagePixels.shape                              #shape describes the image (height,width,samples)
-    print (imagePixelsAxes)                                     
-    imageWidth = imageShape[imagePixelsAxes.index('X')]         #axe which describes image height or YResolution
-    imageHeight = imageShape[imagePixelsAxes.index('Y')]        #axe which describes image width  or XResolution
-    imageChannelCount = imageShape[imagePixelsAxes.index('S')]  #axe which describes image sample size or ChannelCount
-    print ("imageShape = " + str(imageShape))                   #(YResolution, XResolution, channelComponents) format
-    print ("imagePixels.count = " + str(len(imagePixels)))
-    offsetsArray = stripOffsets.value                           #offsets where strips start (byte position in imagePixels)
-    countsArray = stripCounts.value                             #after count strips end (byte position in imagePixels)
-    offsetCountPairs = zip(offsetsArray,countsArray)            #pair offsets and counts for each strip
-    for pair in offsetCountPairs:                               #process each strip
-        offset = int(pair[0] / imageChannelCount)
-        count  = int(pair[1] / imageChannelCount)
-        strip  = imagePixels[offset:(offset + count)]
-        if int(offset + count) > int(imageHeight):
-                count = int(imageHeight - count);
-        if (strip.shape[imagePixelsAxes.index('Y')] == 0):
-               continue 
-        print ("imageHeight = " + str(imageHeight))
-        print ("offset  = " + str(offset))
-        print ("count = " + str(count))
-        print ("strip start at " +  str(offset))
-        print ("strip end at " +    str(offset+count))
-        print ("size = " +          str(strip.shape))
-        startTime = time.time()
-        process_image_strip(strip,imagePixelsAxes)
-        stopTime = time.time()
-        print ("Execution time for strip from bytes " + 
-        	str(offset) + " " + "to " +
-        	str(offset + count) + " " + "is " +
-        	str(stopTime-startTime) + " " + "seconds")
-        #boxesYOffsets = range(stripPixelIndexStart + stripShape[imageAxes.index('Y'), IMAGE_BOX_SIZE_HEIGHT, imageHeight)
-        #boxesXOffsets = range(stripPixelIndexStart, IMAGE_BOX_SIZE_WIDTH , imageWidth)
-        numBoxesX = offset / IMAGE_BOX_SIZE_WIDTH
-        numBoxesY = (offset + count) / IMAGE_BOX_SIZE_HEIGHT
-        #print (strip)
-        print (str(strip.shape))
-        #print(pair)
-        #print(strip)
-        #for offset in stripOffsets.value:
-        #@print (offset)
-        #for count in stripCounts.value:
-        #print (count)
+def process_image_strips(imagePixels: np.ndarray, 
+                         imagePixelsAxes: tuple,         # describes the image as Y height, X width, S sampleSize (3 is 3 dtypes) 
+                         stripOffsets: tiff.TiffTag,     # describes the offsets in the image data of the strip
+                         stripCounts: tiff.TiffTag,                              
+                         rowsPerStrip,                   # describes the rows per strip as given from the TiffFile metadata
+                         outputDirname,
+                         processImageStripLibrary):      # shared library for processing strips
+                         IMAGE_BOX_SIZE_WIDTH  = 2
+                         IMAGE_BOX_SIZE_HEIGHT = 2
+                         #presume X resolution is fair number, it divides by 2
+                         #presume Y resolution is fair number, it divides by 2
+                         #process the image strips as 2x2 box which calculates
+                         #the light point of the EDM by referencing the four corners
+                         #of the BOX (TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT)
+                         #print (imageBytes)
+                         #print (stripOffsets)
+                         #print (stripCounts)
+                         imageShape = imagePixels.shape  # shape describes the image (height,width,samples)
+                         print (imagePixelsAxes)                                     
+                         imageWidth = imageShape[imagePixelsAxes.index('X')]         #axe which describes image height or YResolution
+                         imageHeight = imageShape[imagePixelsAxes.index('Y')]        #axe which describes image width  or XResolution
+                         imageChannelCount = imageShape[imagePixelsAxes.index('S')]  #axe which describes image sample size or ChannelCount
+                         print ("imageShape = " + 
+                                str(imageShape))        #(YResolution, XResolution, channelComponents) format
+                         print ("imagePixels.count = " + str(len(imagePixels)))
+                         offsetsArray = stripOffsets.value                           #offsets where strips start (byte position in imagePixels)
+                         countsArray = stripCounts.value                             #after count strips end (byte position in imagePixels)
+                         offsetCountPairs = zip(offsetsArray,countsArray)            #pair offsets and counts for each strip
+                         for pair in offsetCountPairs:                               #process each strip
+                            offset = int(pair[0] / imageChannelCount)
+                            count  = int(pair[1] / imageChannelCount)
+                            strip  = imagePixels[offset:(offset + count)]
+                            if int(offset + count) > int(imageHeight):
+                                    count = int(imageHeight - count);
+                            if (strip.shape[imagePixelsAxes.index('Y')] == 0):
+                                   continue 
+                            print ("imageHeight = " + str(imageHeight))
+                            print ("offset  = " + str(offset))
+                            print ("count = " + str(count))
+                            print ("strip start at " +  str(offset))
+                            print ("strip end at " +    str(offset+count))
+                            print ("size = " +          str(strip.shape))
+                            startTime = time.time()
+                            process_image_strip(strip,imagePixelsAxes)
+                            stopTime = time.time()
+                            print ("Execution time for strip from bytes " + 
+                            	str(offset) + " " + "to " +
+                            	str(offset + count) + " " + "is " +
+                            	str(stopTime-startTime) + " " + "seconds")
+                            write_tiff_file(outputDirname,
+                                "strip_" + 
+                                str(strip.shape[0]) + "_" +
+                                str(strip.shape[1]) + "_" +
+                                str(strip.shape[2]) + ".tiff",
+                                strip)                   
+                            #boxesYOffsets = range(stripPixelIndexStart + stripShape[imageAxes.index('Y'), IMAGE_BOX_SIZE_HEIGHT, imageHeight)
+                            #boxesXOffsets = range(stripPixelIndexStart, IMAGE_BOX_SIZE_WIDTH , imageWidth)
+                            numBoxesX = offset / IMAGE_BOX_SIZE_WIDTH
+                            numBoxesY = (offset + count) / IMAGE_BOX_SIZE_HEIGHT
+                            #print (strip)
+                            print (str(strip.shape))
+                            #print(pair)
+                            #print(strip)
+                            #for offset in stripOffsets.value:
+                            #@print (offset)
+                            #for count in stripCounts.value:
+                            #print (count)
 
-def process_image_strip(image_strip: np.ndarray, image_axes:tuple): 
+def process_image_strip(image_strip: np.ndarray, 
+                        image_axes:tuple): 
     print (image_strip.dtype)
     print (image_strip.shape)
     strip_width = int(image_strip.shape[image_axes.index('X')])
@@ -128,11 +148,7 @@ def process_image_strip(image_strip: np.ndarray, image_axes:tuple):
                         #print ("stripWidth = " + str(strip_width))
                         #print ("boxXCoordinate = " + str(boxXCoordinate))
                         #print ("boxYCoordinate = " + str(boxYCoordinate))
-    write_tiff_file("strip_" + 
-    				str(image_strip.shape[0]) + "_" +
-    				str(image_strip.shape[1]) + "_" +
-    				str(image_strip.shape[2]) + ".tiff",
-    				image_strip)                   
+
 
 #JARS_DIR_JAR = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "jar"
 #JARS_DIR_ARTIFACTS = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "artifacts"
@@ -216,7 +232,8 @@ for tag in image.tags:
 #print (image_strip_offsets.valueoffset)
 #print (image_strip_offsets.offset)
 #print (image_strip_offsets.parent)
-process_image_strips(image_data, image_axes, image_strip_offsets, image_strip_counts, image_rows_per_strip, process_image_lib)
+process_image_strips(image_data, image_axes, image_strip_offsets, image_strip_counts, image_rows_per_strip, OUTPUT_STRIPS_DIRNAME, process_image_lib)
+                         
 #javabridge.kill_vm()
 ###
 ###for file in files:
