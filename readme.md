@@ -1,38 +1,43 @@
 ### Compile
-#### C
-- install cmake
 #### Linux
-- install cmake
+1. install cmake
 ```
-apt-get install cmake
+apt install cmake
 ```
+2. run cmake
+```
+cmake
+```
+3. run make
+
+### Running
 #### Python
 - install **tifffile** python library for tifffile parsing
 	- _documentation_ for TIFF in **documentation** folder 
 	- ***alternatively*** use imread
 ```
-pip install tifffile 
+pip3 install tifffile 
 ```
 - install **numpy** for image data
 	- _documentation_ for numpy in **documentation** folder 
 ```
-pip install numpy
+pip3 install numpy
 ```
 - install **ctypes** for calling C functions from Python
 ```
-pip install ctypes
+pip3 install ctypes
 ```
 - install **zarr** for compression formats
 	- **required version** 2021.11.2
 	- **tested on little endian platforms**
 	- **python3.7 versions are deprecated**
 ```
-pip install zarr
+pip3 install zarr
 ```
 - install CPython for zarr **maybe it is necessary; didn't use zarr so far**
 	- Cpython 3.10.0, 64bit
 ```
-pip install cpython
+pip3 install cpython
 ```
 
 ### this is for Java VM 
@@ -67,16 +72,8 @@ pip install lxml
 pip install imagecodecs
 ```
 **required version 2021.8.26**
-####Compiling
-1. install cmake
-```
-apt install cmake
-```
-2. run cmake
-```
-cmake
-```
 ####Running
+#### Linux
 python3 generate_edm_image.py
 ```
 

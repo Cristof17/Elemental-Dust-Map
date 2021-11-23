@@ -128,8 +128,7 @@ def process_image_strip(image_strip: np.ndarray, image_axes:tuple):
                         #print ("stripWidth = " + str(strip_width))
                         #print ("boxXCoordinate = " + str(boxXCoordinate))
                         #print ("boxYCoordinate = " + str(boxYCoordinate))
-    write_tiff_file(stripOutputDir + os.sep +
-    				"strip_" + 
+    write_tiff_file("strip_" + 
     				str(image_strip.shape[0]) + "_" +
     				str(image_strip.shape[1]) + "_" +
     				str(image_strip.shape[2]) + ".tiff",
