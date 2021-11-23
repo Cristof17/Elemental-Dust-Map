@@ -1,12 +1,13 @@
 ### Compile
 #### Linux
+#Generate build configuration using cmake
 1. install cmake
 ```
 apt install cmake
 ```
 2. run cmake
 ```
-cmake
+cmake -G Unix\ Makefiles
 ```
 3. run make
 ```
