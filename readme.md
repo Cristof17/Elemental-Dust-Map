@@ -9,6 +9,9 @@ apt install cmake
 cmake
 ```
 3. run make
+```
+make
+```
 
 ### Running
 #### Python
