@@ -13,7 +13,7 @@ cmake
 make
 ```
 
-### Running
+### Run
 #### Python
 - install **tifffile** python library for tifffile parsing
 	- _documentation_ for TIFF in **documentation** folder 
