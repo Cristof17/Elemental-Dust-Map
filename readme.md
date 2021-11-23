@@ -67,14 +67,16 @@ pip install lxml
 pip install imagecodecs
 ```
 **required version 2021.8.26**
-
 ####Compiling
+1. install cmake
 ```
-make
+apt install cmake
 ```
-
+2. run cmake
+```
+cmake
+```
 ####Running
-```
 python3 generate_edm_image.py
 ```
 
