@@ -1,6 +1,6 @@
 ### Compile
 #### Linux
-#Generate build configuration using cmake
+##### Generate build configuration using cmake
 1. install cmake
 ```
 apt install cmake
