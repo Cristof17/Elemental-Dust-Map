@@ -9,9 +9,14 @@
 
 typedef size_t iterator_t;
 
-EDP_t *generate_edp_from_pixel(uint8_t raster_pixel, uint8_t raster_pixel_x, uint8_t raster_pixel_y) {
-	EDP_t *edp = (EDP_t *)malloc(1 * sizeof(EDP_t));
-	edp -> pixel.luminosity.luminosity = (float) raster_pixel;
+/*
+ * bpp BITS PER PIXEL
+ */
+EDP_t *generate_edps_from_pixel(uint8_t raster_pixel_x, uint8_t raster_pixel_y, uint8_t bpp, int pixel_value) {
+	EDP_t *edp = (EDP_t *)malloc(pixel_value * sizeof(EDP_t));
+	for (int i = 0; i < pixel_value; i++) {
+	}
+	edp -> pixel.luminosity.luminosity = (float) pixel_value;
 	edp -> pixel.pixel_boundary.P1.x.real_plane_coordinate = raster_pixel_x;
 	edp -> pixel.pixel_boundary.P1.y.real_plane_coordinate  = raster_pixel_y;
 	edp -> pixel.pixel_boundary.P2.x.real_plane_coordinate = raster_pixel_x + 1;

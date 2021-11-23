@@ -5,11 +5,12 @@ import tifffile as tiff #for reading tiff files
 import lxml as xml
 import ctypes
 import math
+import time
 #from ctypes import cdll as libraryLoader 
 from ctypes import *
 #import ctypes
 #import imagecodecs as codecs
-#import matplotlib as matplotlib 
+#import matplotlib as matplotlib
 #import bioformats.formatreader as reader
 import os
 #import zarr #for parallel computing
@@ -23,7 +24,13 @@ try:
     process_image_lib = ctypes.CDLL(LIB_PATH)
 except Exception as e:
     print (e)
-
+    
+def write_tiff_file (filename, 
+			data:np.ndarray):
+	writer = tiff.TiffWriter(filename)
+	writer.write(data)
+	writer.close()
+	
 def process_image_strips(
     imagePixels: np.ndarray, 
     imagePixelsAxes: tuple,                                     # describes the image as Y height, X width, S sampleSize (3 is 3 dtypes) 
@@ -65,7 +72,13 @@ def process_image_strips(
         print ("strip start at " +  str(offset))
         print ("strip end at " +    str(offset+count))
         print ("size = " +          str(strip.shape))
+        startTime = time.time()
         process_image_strip(strip,imagePixelsAxes)
+        stopTime = time.time()
+        print ("Execution time for strip from bytes " + 
+        	str(offset) + " " + "to " +
+        	str(offset + count) + " " + "is " +
+        	str(stopTime-startTime) + " " + "seconds")
         #boxesYOffsets = range(stripPixelIndexStart + stripShape[imageAxes.index('Y'), IMAGE_BOX_SIZE_HEIGHT, imageHeight)
         #boxesXOffsets = range(stripPixelIndexStart, IMAGE_BOX_SIZE_WIDTH , imageWidth)
         numBoxesX = offset / IMAGE_BOX_SIZE_WIDTH
@@ -113,6 +126,7 @@ def process_image_strip(image_strip: np.ndarray, image_axes:tuple):
                         #print ("stripWidth = " + str(strip_width))
                         #print ("boxXCoordinate = " + str(boxXCoordinate))
                         #print ("boxYCoordinate = " + str(boxYCoordinate))
+    write_tiff_file('tst',image_strip)                        
 
 #JARS_DIR_JAR = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "jar"
 #JARS_DIR_ARTIFACTS = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "artifacts"
