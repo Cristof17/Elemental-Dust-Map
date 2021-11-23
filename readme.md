@@ -14,7 +14,12 @@ make
 ```
 
 ### Run
-#### Python
+#### Linux
+1. install python3
+```
+apt install python3
+```
+##### Python
 - install **tifffile** python library for tifffile parsing
 	- _documentation_ for TIFF in **documentation** folder 
 	- ***alternatively*** use imread
