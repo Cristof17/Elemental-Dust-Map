@@ -78,7 +78,6 @@ def process_image_strips(imagePixels: np.ndarray,
                             count  = int(pair[1] / imageChannelCount)
                             strip  = imagePixels[offset:(offset + count)]
                             plot.title("initial signal representation")
-                            #plot.plot(strip)
                             plot_strip_channels(strip,imagePixelsAxes)
                             if int(offset + count) > int(imageHeight):
                                     count = int(imageHeight - count);
@@ -123,13 +122,19 @@ def plot_strip_channels(strip,axes):
     use the c library to compute the Dirac delta function in each point of the input signal 
     plot.plot(strip[0])
     '''
+    plot.plot(strip[0])
+    plot.show()
     for channel in range(0,samples):
         for x in range (0,int(xCount-1)):
-            for y in range (0,int(yCount-1)):
+            continue
+            #for y in range (0,int(yCount-1)):
                 #signalPoint = strip[y][x][channel]
-                print("printing")
+                #print("printing")
                 #plot.title(signalPoint)
                 #plot.plot()
+                #'''
+                #plot each signal channel independently
+                #'''
 
 def process_image_strip(image_strip: np.ndarray, 
                         image_axes:tuple): 
