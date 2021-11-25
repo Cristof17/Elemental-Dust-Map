@@ -1,2 +1,4 @@
 laborator/Data/
 *.o
+*.tiff
+outputs/**
