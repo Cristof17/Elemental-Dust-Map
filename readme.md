@@ -14,6 +14,13 @@ cmake -G Unix\ Makefiles
 make
 ```
 
+- fisierul ***generate_edm_image.py*** este doar pentru a analiza mai repede rezultatele grafice pentru procesarea semnalului de intrare
+- fisierul ***generate_edm_image.cpp*** este pentru a impementa algorimii de procesare a semnalului sub forma unor clase
+- fisierul ***generate_edm_from_raster.c*** este pentru a rula algoritmii pentru o unitate grafica in care timpii de rulare sunt foarte importanti
+- fisierul ***generate_edm_from_raster.c*** este compilat intr-o biblioteca dinamica care este:
+	- link-editata intr-un fisier executabil impreuna cu clasele din fisierul ***generate_edm_image.cpp***
+	- importata in scriptul python pentru a putea desena reprezentarea semnalului
+
 ### Run
 #### Linux
 1. install python3
