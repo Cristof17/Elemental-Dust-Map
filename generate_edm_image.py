@@ -10,7 +10,7 @@ import time
 from ctypes import *
 #import ctypes
 #import imagecodecs as codecs
-#import matplotlib as matplotlib
+import matplotlib.pyplot as plot
 #import bioformats.formatreader as reader
 import os
 #import zarr #for parallel computing
@@ -77,6 +77,9 @@ def process_image_strips(imagePixels: np.ndarray,
                             offset = int(pair[0] / imageChannelCount)
                             count  = int(pair[1] / imageChannelCount)
                             strip  = imagePixels[offset:(offset + count)]
+                            plot.title("initial signal representation")
+                            #plot.plot(strip)
+                            plot_strip_channels(strip,imagePixelsAxes)
                             if int(offset + count) > int(imageHeight):
                                     count = int(imageHeight - count);
                             if (strip.shape[imagePixelsAxes.index('Y')] == 0):
@@ -87,6 +90,7 @@ def process_image_strips(imagePixels: np.ndarray,
                             print ("strip start at " +  str(offset))
                             print ("strip end at " +    str(offset+count))
                             print ("size = " +          str(strip.shape))
+                            plot_strip_channels(strip,imagePixelsAxes)
                             startTime = time.time()
                             process_image_strip(strip,imagePixelsAxes)
                             stopTime = time.time()
@@ -94,11 +98,7 @@ def process_image_strips(imagePixels: np.ndarray,
                             	str(offset) + " " + "to " +
                             	str(offset + count) + " " + "is " +
                             	str(stopTime-startTime) + " " + "seconds")
-                            write_tiff_file(outputDirname,
-                                "strip_" + 
-                                str(strip.shape[0]) + "_" +
-                                str(strip.shape[1]) + "_" +
-                                str(strip.shape[2]) + ".tiff",
+                            write_tiff_file(outputDirname, "strip_" + str(strip.shape[0]) + "_" + str(strip.shape[1]) + "_" + str(strip.shape[2]) + ".tiff",
                                 strip)                   
                             #boxesYOffsets = range(stripPixelIndexStart + stripShape[imageAxes.index('Y'), IMAGE_BOX_SIZE_HEIGHT, imageHeight)
                             #boxesXOffsets = range(stripPixelIndexStart, IMAGE_BOX_SIZE_WIDTH , imageWidth)
@@ -112,6 +112,25 @@ def process_image_strips(imagePixels: np.ndarray,
                             #@print (offset)
                             #for count in stripCounts.value:
                             #print (count)
+def plot_strip_channels(strip,axes):
+    shape = strip.shape
+    xCount = shape[axes.index('X')]
+    yCount = shape[axes.index('Y')]
+    samples = shape[axes.index('S')]
+    '''
+    plot the discrete signal representation of each channel for each strip in the image
+    plot the discrete signal using the Diract delta function
+    use the c library to compute the Dirac delta function in each point of the input signal 
+    plot.plot(strip[0])
+    '''
+    for channel in range(0,samples):
+        for x in range (0,int(xCount-1)):
+            for y in range (0,int(yCount-1)):
+                #signalPoint = strip[y][x][channel]
+                print("printing")
+                #plot.title(signalPoint)
+                #plot.plot()
+                '''
 
 def process_image_strip(image_strip: np.ndarray, 
                         image_axes:tuple): 
