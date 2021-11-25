@@ -130,7 +130,6 @@ def plot_strip_channels(strip,axes):
                 print("printing")
                 #plot.title(signalPoint)
                 #plot.plot()
-                '''
 
 def process_image_strip(image_strip: np.ndarray, 
                         image_axes:tuple): 
