@@ -20,6 +20,7 @@ import os
 process_image_lib = None
 OUTPUT_DIRNAME = os.getcwd() + os.sep + "outputs" + os.sep
 OUTPUT_STRIPS_DIRNAME = OUTPUT_DIRNAME + os.sep + "strips" + os.sep
+
 try:
     os.mkdir(OUTPUT_DIRNAME)
 except FileExistsError as e:
@@ -123,6 +124,9 @@ def plot_strip_channels(strip,axes):
     plot.plot(strip[0])
     '''
     plot.plot(strip[0])
+    plot.set_xlabel(['width'])
+    plot.set_ylabel(['depth'])
+    plot.title(str(xCount) + "_" + str(y_Count) + "_" + str(samples))
     plot.show()
     for channel in range(0,samples):
         for x in range (0,int(xCount-1)):
