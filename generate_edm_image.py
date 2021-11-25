@@ -1,5 +1,5 @@
 #import bioformats as bf
-#import javabridge
+import javabridge
 import numpy as np
 import tifffile as tiff #for reading tiff files
 import lxml as xml
@@ -178,11 +178,11 @@ def process_image_strip(image_strip: np.ndarray,
 
 
 #JARS_DIR_JAR = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "jar"
-#JARS_DIR_ARTIFACTS = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "artifacts"
-#JARS = list()
+JARS_DIR_ARTIFACTS = os.getcwd() + os.sep + "libraries" + os.sep + "bioformats" + os.sep + "artifacts"
+JARS = list()
 #JARS.append([JARS_DIR_JAR + os.sep + file for file in os.listdir(JARS_DIR_JAR)])
 #JARS.append([str(JARS_DIR_ARTIFACTS + os.sep + file) for file in os.listdir(JARS_DIR_ARTIFACTS)])
-#print (JARS)
+print (JARS)
 
 DATASET_DIR = os.getcwd() + os.sep + "../" + os.sep + "laborator" + os.sep + "Data" + os.sep + "CCS" + os.sep + "Detectie_Regiuni_Poligonale"
 DATASETS = [str(DATASET_DIR + os.sep + file) for file in os.listdir(DATASET_DIR)]
@@ -196,7 +196,7 @@ print (DATASETS)
 def myfunction():
     print (myfunction)
 
-#javabridge.start_vm(class_path=str(JARS))
+javabridge.start_vm(class_path=str(JARS))
 #print (bf.__name__)
 #imagereader = bf.get_image_reader(key=None, path=DATASETS[0])
 #metadata = javabridge.JWrapper(imagereader,imagereader.getMetadataStore())
@@ -261,8 +261,8 @@ for tag in image.tags:
 #print (image_strip_offsets.parent)
 process_image_strips(image_data, image_axes, image_strip_offsets, image_strip_counts, image_rows_per_strip, OUTPUT_STRIPS_DIRNAME, process_image_lib)
                          
-#javabridge.kill_vm()
-###
+javabridge.kill_vm()
+##
 ###for file in files:
     ###print ("file = " + file)
 ###
