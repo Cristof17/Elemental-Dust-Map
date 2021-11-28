@@ -124,9 +124,7 @@ def plot_strip_channels(strip,axes):
     plot.plot(strip[0])
     '''
     plot.plot(strip[0])
-    plot.set_xlabel(['width'])
-    plot.set_ylabel(['depth'])
-    plot.title(str(xCount) + "_" + str(y_Count) + "_" + str(samples))
+    plot.title(str(xCount) + "_" + str(yCount) + "_" + str(samples))
     plot.show()
     for channel in range(0,samples):
         for x in range (0,int(xCount-1)):

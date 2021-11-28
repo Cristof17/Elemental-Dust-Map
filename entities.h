@@ -1,33 +1,30 @@
 typedef struct coordinate {
-    float real_plane_coordinate;
+    float coordinate_value;
 } coordinate_t;
 
 typedef struct point {
-    coordinate_t x;
-    coordinate_t y;
+    coordinate_t *point_coordinate;
 } point_t;
 
 typedef struct boundary {
-    point_t P1; 
-    point_t P2;
-    point_t P3;
-    point_t P4;
+    point_t *boundary_points; 
 } boundary_t;
 
 typedef struct luminosity {
-    float luminosity;
+    float luminosity_value;
 } luminosity_t;
 
 typedef struct pixel {
-    point_t pixel_coordinates;
-    boundary_t pixel_boundary;     
-    luminosity_t luminosity;
+    point_t *pixel_point;
+    boundary_t *pixel_boundary;     
+    luminosity_t *pixel_luminosity;
 } pixel_t;
 
+
 typedef struct edp {
-    pixel_t pixel;
+    pixel_t *edp_pixel;
 } EDP_t;
 
 typedef struct edm {
-    EDP_t * edp_rectangle; 
+    EDP_t *edm_edp; 
 } EDM_t;
